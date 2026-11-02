@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F8F9FA">
+
+    <!-- Üst Başlık ve Geri Butonu Çubuğu -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="8dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:src="@android:drawable/ic_menu_revert"
+            android:contentDescription="Geri" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Derslerde Ara"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#111111"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <!-- Arama Çubuğu -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchViewPage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:background="@android:drawable/editbox_background"
+        app:iconifiedByDefault="false"
+        app:queryHint="Ders adı yazın (örn: Sorting, Trees)..." />
+
+    <!-- Arama Sonuçları Listesi -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewSearchResults"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:padding="4dp" />
+
+</LinearLayout>
