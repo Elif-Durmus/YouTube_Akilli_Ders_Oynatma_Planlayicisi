@@ -1,5 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <!-- Dumanlı Buz Mavisi & Grimsi Palet -->
+    <color name="misty_bg">#EEF2F6</color>           <!-- Ana ekran dumanlı gri-mavi arka plan -->
+    <color name="ice_surface">#F8FAFC</color>        <!-- Kart yüzeyi (Buz beyazı) -->
+    <color name="ice_card_tint">#E1EBF5</color>      <!-- Hafif buz mavisi vurgu alanı -->
+    <color name="slate_primary">#3B6978</color>      <!-- Ana buton ve başlık rengi (Dumanlı petrol/buz mavisi) -->
+    <color name="slate_dark">#204051</color>         <!-- Koyu kayrak mavisi (Üst bar ve aktif metin) -->
+    <color name="steel_accent">#5C8D89</color>       <!-- İkincil buton / onay rengi -->
+    <color name="smoke_border">#CBD5E1</color>       <!-- İnce duman grisi kenarlık -->
+    <color name="text_primary">#1E293B</color>       <!-- Ana koyu gri-lacivert metin -->
+    <color name="text_secondary">#64748B</color>     <!-- Alt bilgi / süre metni -->
+    <color name="white">#FFFFFF</color>
 </resources>

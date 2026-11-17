@@ -34,6 +34,7 @@ class SearchActivity : AppCompatActivity() {
         val passedLectures = intent.getStringArrayListExtra("LECTURE_TITLES") ?: arrayListOf()
         val passedIds = intent.getStringArrayListExtra("LECTURE_IDS") ?: arrayListOf()
         val passedDurations = intent.getStringArrayListExtra("LECTURE_DURATIONS") ?: arrayListOf()
+        val passedDurationSeconds = intent.getIntegerArrayListExtra("LECTURE_DURATION_SECONDS") ?: arrayListOf()
         val passedThumbs = intent.getStringArrayListExtra("LECTURE_THUMBS") ?: arrayListOf()
 
         for (i in 0 until aktarilanBaslikSayisi(passedLectures.size, passedIds.size)) {
@@ -42,7 +43,7 @@ class SearchActivity : AppCompatActivity() {
                     id = passedIds[i],
                     title = passedLectures[i],
                     duration = if (i < passedDurations.size) passedDurations[i] else "",
-                    durationSeconds = 0,
+                    durationSeconds = if (i < passedDurationSeconds.size) passedDurationSeconds[i] else 0,
                     youtubeVideoId = passedIds[i],
                     thumbnailUrl = if (i < passedThumbs.size) passedThumbs[i] else ""
                 )
@@ -57,6 +58,9 @@ class SearchActivity : AppCompatActivity() {
             val resultIntent = Intent().apply {
                 putExtra("SELECTED_VIDEO_ID", clickedLecture.youtubeVideoId)
                 putExtra("SELECTED_TITLE", clickedLecture.title)
+                putExtra("SELECTED_DURATION", clickedLecture.duration)
+                putExtra("SELECTED_DURATION_SECONDS", clickedLecture.durationSeconds)
+                putExtra("SELECTED_THUMB", clickedLecture.thumbnailUrl)
             }
             setResult(Activity.RESULT_OK, resultIntent)
             finish()

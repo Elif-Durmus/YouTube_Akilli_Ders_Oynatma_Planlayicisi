@@ -11,4 +11,3 @@ data class Lecture(
     val thumbnailUrl: String
 ) : Serializable
 
-

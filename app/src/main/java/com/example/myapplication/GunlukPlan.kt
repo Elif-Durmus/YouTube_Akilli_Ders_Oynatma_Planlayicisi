@@ -6,7 +6,8 @@ import java.io.Serializable
 data class GunlukPlan(
     val gunNumarasi: Int,
     val toplamSureMetni: String,
-    val dersler: ArrayList<Lecture>
+    val dersler: ArrayList<Lecture>,
+    val tarihMetni: String = ""
 ) : Serializable
 
 // Bir haftanın günlerini toplayan veri modeli

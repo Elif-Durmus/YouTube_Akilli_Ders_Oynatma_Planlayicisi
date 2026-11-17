@@ -1,57 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
-    android:background="#F8F9FA">
+    android:background="@color/misty_bg">
 
     <!-- Üst Başlık ve Buton Çubuğu -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:background="#6200EE"
+        android:layout_height="62dp"
+        android:background="@color/slate_dark"
         android:gravity="center_vertical"
-        android:paddingHorizontal="16dp">
+        android:paddingHorizontal="12dp">
+
+        <ImageButton
+            android:id="@+id/btnTakvimGeri"
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:layout_marginEnd="6dp"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Ana Ekrana Dön"
+            android:src="@android:drawable/ic_menu_revert"
+            app:tint="@color/white" />
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Çalışma Takvimi"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnYeniPlanYap"
             android:layout_width="wrap_content"
-            android:layout_height="44dp"
-            android:text="+ Yeni Plan"
-            android:textColor="#6200EE"
-            android:backgroundTint="#FFFFFF"
-            android:textSize="13sp"
-            android:textStyle="bold" />
+            android:layout_height="40dp"
+            android:text="+ Plan Oluştur"
+            android:textColor="@color/slate_dark"
+            android:backgroundTint="@color/ice_card_tint"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            app:cornerRadius="10dp" />
     </LinearLayout>
 
-    <!-- Plan Bilgi Kartı -->
-    <TextView
-        android:id="@+id/tvPlanOzeti"
+    <!-- Algoritma Seçim Butonları (6. Hafta SPT vs 7. Hafta Greedy Load Balancing) -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#EDE7F6"
-        android:padding="14dp"
-        android:text="Henüz bir çalışma planı oluşturulmadı."
-        android:textColor="#4A148C"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="4dp">
 
-    <!-- Takvim Listesi -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAlgoritmaSpt"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="1. SPT (Kısa Önce)"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/slate_primary"
+            android:textColor="@color/white"
+            app:cornerRadius="10dp"
+            android:layout_marginEnd="6dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnAlgoritmaLoadBalance"
+            android:layout_width="0dp"
+            android:layout_height="42dp"
+            android:layout_weight="1"
+            android:text="2. Yük Dengeleme"
+            android:textAllCaps="false"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/ice_surface"
+            android:textColor="@color/slate_dark"
+            app:strokeColor="@color/slate_primary"
+            app:strokeWidth="1dp"
+            app:cornerRadius="10dp" />
+    </LinearLayout>
+
+    <!-- Plan Bilgi ve Metrik Kartı -->
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="6dp"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/ice_card_tint">
+
+        <TextView
+            android:id="@+id/tvPlanOzeti"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="12dp"
+            android:text="Henüz bir çalışma planı oluşturulmadı."
+            android:textColor="@color/slate_dark"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </androidx.cardview.widget.CardView>
+
+    <!-- Takvim Kartları Listesi -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewTakvim"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:padding="8dp" />
+        android:paddingHorizontal="12dp"
+        android:paddingBottom="12dp" />
 
 </LinearLayout>

@@ -4,12 +4,10 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.content.Intent
 import android.os.CountDownTimer
-import android.text.InputType
 import android.webkit.JavascriptInterface
 import android.webkit.WebChromeClient
 import android.webkit.WebView
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -29,12 +27,17 @@ import android.content.Context
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var btnSpeed1x: com.google.android.material.button.MaterialButton
+    private lateinit var btnSpeed15x: com.google.android.material.button.MaterialButton
+    private lateinit var btnSpeed2x: com.google.android.material.button.MaterialButton
     private lateinit var webViewPlayer: WebView
     private lateinit var tvActiveTitle: TextView
     private lateinit var tvRemainingTime: TextView
     private lateinit var btnProgramAksiyon: Button
     private lateinit var btnOpenSchedule: Button
-    private lateinit var searchViewCourses: SearchView
+
+    // Eski: private lateinit var searchViewCourses: SearchView
+    private lateinit var searchViewCourses: android.widget.LinearLayout
     private lateinit var recyclerViewLectures: RecyclerView
 
     private lateinit var recyclerViewCourses: RecyclerView
@@ -84,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
     // Kalan saniyeyi 'Kalan: 1 sa 15 dk 20 sn' veya 'Kalan: 45 dk 10 sn' yapar
     private fun saniyeyiSayacaCevir(toplamSaniye: Long): String {
         val sa = toplamSaniye / 3600
@@ -120,10 +124,15 @@ class MainActivity : AppCompatActivity() {
         searchViewCourses = findViewById(R.id.searchViewCourses)
         recyclerViewLectures = findViewById(R.id.recyclerViewLectures)
 
-        val btnSpeed1x = findViewById<Button>(R.id.btnSpeed1x)
-        val btnSpeed15x = findViewById<Button>(R.id.btnSpeed15x)
-        val btnSpeed2x = findViewById<Button>(R.id.btnSpeed2x)
+        btnSpeed1x = findViewById(R.id.btnSpeed1x)
+        btnSpeed15x = findViewById(R.id.btnSpeed15x)
+        btnSpeed2x = findViewById(R.id.btnSpeed2x)
 
+        btnSpeed1x.setOnClickListener { oynatmaHiziniAyarla(1.0) }
+        btnSpeed15x.setOnClickListener { oynatmaHiziniAyarla(1.5) }
+        btnSpeed2x.setOnClickListener { oynatmaHiziniAyarla(2.0) }
+
+        hizButonGorunumunuGuncelle(1.0) // Uygulama açılışında 1.0x seçili görünsün
         webViewPlayer.settings.javaScriptEnabled = true
         webViewPlayer.settings.domStorageEnabled = true
         webViewPlayer.settings.mediaPlaybackRequiresUserGesture = false
@@ -421,12 +430,37 @@ class MainActivity : AppCompatActivity() {
     private fun oynatmaHiziniAyarla(rate: Double) {
         val js = "if(player && player.setPlaybackRate) { player.setPlaybackRate($rate); }"
         webViewPlayer.evaluateJavascript(js, null)
+        hizButonGorunumunuGuncelle(rate)
         Toast.makeText(this, "Hız: ${rate}x", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun hizButonGorunumunuGuncelle(seciliHiz: Double) {
+        val butonlar = listOf(
+            1.0 to btnSpeed1x,
+            1.5 to btnSpeed15x,
+            2.0 to btnSpeed2x
+        )
+
+        val aktifArkaPlan = androidx.core.content.ContextCompat.getColor(this, R.color.slate_primary)
+        val pasifArkaPlan = androidx.core.content.ContextCompat.getColor(this, R.color.ice_surface)
+        val pasifYazi = androidx.core.content.ContextCompat.getColor(this, R.color.slate_dark)
+
+        for ((hiz, buton) in butonlar) {
+            if (hiz == seciliHiz) {
+                buton.setBackgroundColor(aktifArkaPlan)
+                buton.setTextColor(android.graphics.Color.WHITE)
+            } else {
+                buton.setBackgroundColor(pasifArkaPlan)
+                buton.setTextColor(pasifYazi)
+            }
+        }
     }
 
     private fun calismaPlaniniBaslat(targetMinutes: Long) {
         studyTimer?.cancel()
         remainingTimeSeconds = targetMinutes * 60
+        isTimerRunning = true
+        btnProgramAksiyon.text = "⏸️ Çalışmayı Duraklat"
 
         studyTimer = object : CountDownTimer(remainingTimeSeconds * 1000, 1000) {
             override fun onTick(millisUntilFinished: Long) {
@@ -436,7 +470,9 @@ class MainActivity : AppCompatActivity() {
 
             override fun onFinish() {
                 remainingTimeSeconds = 0
+                isTimerRunning = false
                 tvRemainingTime.text = "Süre Doldu!"
+                btnProgramAksiyon.text = "▶️ Programı Başlat"
 
                 val activeLecture = currentPlayingLecture
                 val videoKalanSaniye = if (activeLecture != null) {
@@ -482,9 +518,6 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun aramaFiltresiniAyarla() {
-        searchViewCourses.setOnSearchClickListener {
-            aramaEkraniniAc()
-        }
         searchViewCourses.setOnClickListener {
             aramaEkraniniAc()
         }
@@ -494,12 +527,14 @@ class MainActivity : AppCompatActivity() {
         val titles = ArrayList<String>()
         val ids = ArrayList<String>()
         val durations = ArrayList<String>()
+        val durationSecondsList = ArrayList<Int>()
         val thumbs = ArrayList<String>()
 
         for (lec in fullLectureList) {
             titles.add(lec.title)
             ids.add(lec.youtubeVideoId)
             durations.add(lec.duration)
+            durationSecondsList.add(lec.durationSeconds)
             thumbs.add(lec.thumbnailUrl)
         }
 
@@ -507,6 +542,7 @@ class MainActivity : AppCompatActivity() {
             putStringArrayListExtra("LECTURE_TITLES", titles)
             putStringArrayListExtra("LECTURE_IDS", ids)
             putStringArrayListExtra("LECTURE_DURATIONS", durations)
+            putIntegerArrayListExtra("LECTURE_DURATION_SECONDS", durationSecondsList)
             putStringArrayListExtra("LECTURE_THUMBS", thumbs)
         }
         startActivityForResult(intent, 1001)
@@ -517,13 +553,24 @@ class MainActivity : AppCompatActivity() {
         if (requestCode == 1001 && resultCode == RESULT_OK && data != null) {
             val videoId = data.getStringExtra("SELECTED_VIDEO_ID") ?: ""
             val title = data.getStringExtra("SELECTED_TITLE") ?: ""
+            val durationStr = data.getStringExtra("SELECTED_DURATION") ?: ""
+            val durationSec = data.getIntExtra("SELECTED_DURATION_SECONDS", 0)
+            val thumbUrl = data.getStringExtra("SELECTED_THUMB") ?: ""
+
             if (videoId.isNotEmpty()) {
                 val foundLecture = fullLectureList.find { it.youtubeVideoId == videoId }
                 if (foundLecture != null) {
                     derseTiklandiginda(foundLecture)
                 } else {
-                    tvActiveTitle.text = title
-                    videoyuYukle(videoId, 0L)
+                    val tempLecture = Lecture(
+                        id = videoId,
+                        title = title,
+                        duration = durationStr,
+                        durationSeconds = durationSec,
+                        youtubeVideoId = videoId,
+                        thumbnailUrl = thumbUrl
+                    )
+                    derseTiklandiginda(tempLecture)
                 }
             }
         }

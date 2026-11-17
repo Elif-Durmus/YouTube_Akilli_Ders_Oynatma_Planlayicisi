@@ -1,123 +1,191 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Ana ekran tasarımı -->
+<!-- Ana ekran tasarımı - Dumanlı Buz Mavisi Tema -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#FFFFFF">
+    android:background="@color/misty_bg">
 
     <!-- Youtube videosunu oynattığımız gömülü tarayıcı alanı -->
     <WebView
         android:id="@+id/webViewPlayer"
         android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:background="#000000" />
+        android:layout_height="210dp"
+        android:background="#0F172A" />
 
-    <!-- Oynatma hızı butonlarını yan yana dizen şerit -->
-    <LinearLayout
+    <!-- Oynatma hızı ve aktif ders bilgi kartı -->
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
-        android:padding="6dp"
-        android:background="#F5F5F5">
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="14dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="@color/ice_surface">
 
-        <TextView
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Hız: "
-            android:textStyle="bold"
-            android:layout_marginEnd="8dp"
-            android:textColor="#333333" />
+            android:orientation="vertical"
+            android:padding="10dp">
 
-        <!-- Videoyu normal hızda oynatan buton -->
-        <Button
-            android:id="@+id/btnSpeed1x"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="1.0x"
-            android:textSize="12sp"
-            android:layout_marginEnd="4dp" />
+            <!-- O an oynatılan aktif dersin adını gösteren başlık alanı -->
+            <TextView
+                android:id="@+id/tvActiveTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Bir ders seçin"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="@color/slate_dark"
+                android:maxLines="2"
+                android:ellipsize="end"
+                android:layout_marginBottom="8dp" />
 
-        <!-- Videoyu 1.5 kat hızlandıran buton -->
-        <Button
-            android:id="@+id/btnSpeed15x"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="1.5x"
-            android:textSize="12sp"
-            android:layout_marginEnd="4dp" />
+            <!-- Oynatma hızı butonlarını yan yana dizen şerit -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
 
-        <!-- Videoyu 2 kat hızlandıran buton -->
-        <Button
-            android:id="@+id/btnSpeed2x"
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:text="2.0x"
-            android:textSize="12sp" />
-    </LinearLayout>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hız:"
+                    android:textSize="12sp"
+                    android:textStyle="bold"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@color/text_secondary" />
 
-    <!-- Hedef süre belirleme butonu ve program ekranı geçişi -->
+                <!-- Videoyu normal hızda oynatan buton -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSpeed1x"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="64dp"
+                    android:layout_height="36dp"
+                    android:text="1.0x"
+                    android:textSize="11sp"
+                    android:textColor="@color/slate_dark"
+                    app:strokeColor="@color/slate_primary"
+                    app:cornerRadius="10dp"
+                    android:padding="0dp"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- Videoyu 1.5 kat hızlandıran buton -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSpeed15x"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="64dp"
+                    android:layout_height="36dp"
+                    android:text="1.5x"
+                    android:textSize="11sp"
+                    android:textColor="@color/slate_dark"
+                    app:strokeColor="@color/slate_primary"
+                    app:cornerRadius="10dp"
+                    android:padding="0dp"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- Videoyu 2 kat hızlandıran buton -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSpeed2x"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="64dp"
+                    android:layout_height="36dp"
+                    android:text="2.0x"
+                    android:textSize="11sp"
+                    android:textColor="@color/slate_dark"
+                    app:strokeColor="@color/slate_primary"
+                    app:cornerRadius="10dp"
+                    android:padding="0dp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1" />
+
+                <!-- Kalan süreyi gösteren rozet -->
+                <TextView
+                    android:id="@+id/tvRemainingTime"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_ice_pill"
+                    android:paddingHorizontal="10dp"
+                    android:paddingVertical="5dp"
+                    android:text="Plan: Yok"
+                    android:textSize="11sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/slate_dark" />
+            </LinearLayout>
+
+            <!-- Hedef süre belirleme butonu ve program ekranı geçişi -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="8dp">
+
+                <!-- Çalışma hedefi penceresi butonu -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSetPlan"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:text="Hedef Belirle"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/slate_primary"
+                    android:textColor="@color/white"
+                    app:cornerRadius="10dp"
+                    android:layout_marginEnd="6dp" />
+
+                <!-- Program Takvimi Ekranına Geçiş Butonu -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnOpenSchedule"
+                    android:layout_width="0dp"
+                    android:layout_height="42dp"
+                    android:layout_weight="1"
+                    android:text="📅 Programım"
+                    android:textSize="12sp"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/slate_dark"
+                    android:textColor="@color/white"
+                    app:cornerRadius="10dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <!-- Tıklandığında SearchActivity arama ekranını açan şık arama çubuğu -->
     <LinearLayout
+        android:id="@+id/searchViewCourses"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="42dp"
+        android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_smoke_card"
         android:orientation="horizontal"
         android:gravity="center_vertical"
         android:paddingHorizontal="12dp"
-        android:paddingVertical="6dp"
-        android:background="#EDE7F6">
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground">
 
-        <!-- Çalışma hedefi penceresi butonu -->
-        <Button
-            android:id="@+id/btnSetPlan"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="Hedef Belirle"
-            android:textSize="11sp" />
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@android:drawable/ic_menu_search"
+            app:tint="@color/slate_primary"
+            android:contentDescription="Ara" />
 
-        <!-- Program Takvimi Ekranına Geçiş Butonu -->
-        <Button
-            android:id="@+id/btnOpenSchedule"
-            android:layout_width="wrap_content"
-            android:layout_height="38dp"
-            android:text="📅 Programım"
-            android:textSize="11sp"
-            android:layout_marginStart="6dp" />
-
-        <!-- Kalan süreyi gösteren metin alanı -->
         <TextView
-            android:id="@+id/tvRemainingTime"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Plan: Belirlenmedi"
-            android:textSize="12sp"
-            android:textStyle="bold"
-            android:textColor="#4A148C"
-            android:gravity="end" />
+            android:layout_marginStart="10dp"
+            android:text="Derslerde ara..."
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
     </LinearLayout>
-
-    <!-- Yazdıkça dersleri filtreleyen arama çubuğu -->
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchViewCourses"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="4dp"
-        android:background="#F0F0F0" />
-
-    <!-- O an oynatılan aktif dersin adını gösteren başlık alanı -->
-    <TextView
-        android:id="@+id/tvActiveTitle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:paddingVertical="8dp"
-        android:text="Bir ders seçin"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        android:textColor="#111111"
-        android:maxLines="2" />
 
     <!-- Oynatma listeleri başlığı -->
     <TextView
@@ -125,12 +193,11 @@
         android:layout_height="wrap_content"
         android:text="Oynatma Listeleri"
         android:textStyle="bold"
-        android:textSize="16sp"
-        android:textColor="@android:color/black"
-        android:paddingStart="12dp"
-        android:paddingEnd="12dp"
+        android:textSize="14sp"
+        android:textColor="@color/slate_dark"
+        android:paddingHorizontal="12dp"
         android:paddingTop="8dp"
-        android:paddingBottom="4dp" />
+        android:paddingBottom="2dp" />
 
     <!-- Yatay kaydırılabilir kurs kartları -->
     <androidx.recyclerview.widget.RecyclerView
@@ -138,8 +205,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingStart="4dp"
-        android:paddingEnd="4dp"
+        android:paddingHorizontal="6dp"
         android:clipToPadding="false" />
 
     <!-- Tüm ders videolarını alt alta kaydırarak listeleyen alan -->
@@ -147,6 +213,8 @@
         android:id="@+id/recyclerViewLectures"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:paddingHorizontal="6dp"
+        android:paddingTop="4dp" />
 
 </LinearLayout>
